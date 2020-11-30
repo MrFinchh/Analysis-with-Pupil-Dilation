@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Experiments_For_Pupil_Dilation</string>
+    <string name="experiment_center_title">Deney Seçim Merkezi</string>
+    <string name="experiment_cognitive_intensity">Bilişsel Yoğunluk Deneyleri</string>
+    <string name="experiment_emotions">Duygu Deneyleri</string>
+    <string name="experiment_help">Deneyler Hakkında Açıklama</string>
+    <string name="experiment_help_explanation">
+        Burada iki seçenek görmektesiniz.Bunlardan bir tanesi duygusal değişimlerinizi tespit
+        etmek için oluşturulan duygu deneylerini içerir.
+        Diğeri ise matematik, hafıza, bilgiye dayalı yorum
+        ve zaman yönetimi gibi durumları incelemek üzere hazırlanan deneylerdir.
+        Bu pencereyi kapatmak için ekrandaki herhangi bir yere basabilirsiniz.</string>
+</resources>
