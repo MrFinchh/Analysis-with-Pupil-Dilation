@@ -4,26 +4,26 @@ public interface ExperimentTypes
 {
     String [] EMOTION  =
             {
-                    "HAPPINESS",
-                    "SADNESS",
-                    "FEAR",
-                    "ANGER",
-                    "PATRIOTIC",
-                    "POLITICAL_ATTITUDE",
-                    "HOPE",
-                    "NEUTRAL"
+                    "ANGER",                                    // sinir
+                    "FEAR",                                     // korku
+                    "HAPPINESS",                                // mutluluk
+                    "HOPE",                                     // umut
+                    "NEUTRAL",                                  // normal
+                    "PATRIOTIC",                                // vatanseverlik
+                    "POLITICAL_ATTITUDE",                       // siyasi tutum
+                    "SADNESS",                                  // üzüntü
             };
 
 
     String [] COGNITIVE =
             {
-                    "MATHEMATICAL_EASY",
-                    "MATHEMATICAL_MEDIUM",
-                    "MATHEMATICAL_HARD",
                     "MATHEMATICAL_ADD_1",
                     "MATHEMATICAL_ADD_3",
-                    "MATHEMATICAL_TIME_LIMITED",
                     "MATHEMATICAL_CROSSCHECK_QUESTIONS",
+                    "MATHEMATICAL_EASY",
+                    "MATHEMATICAL_HARD",
+                    "MATHEMATICAL_MEDIUM",
+                    "MATHEMATICAL_TIME_LIMITED",
                     "MEMORY_GAMES",
                     "QUESTION_RELATED_INFORMATION"
             };

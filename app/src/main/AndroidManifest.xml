@@ -31,6 +31,9 @@
             android:name=".experiments.ExperimentSelector"
             android:screenOrientation="portrait" />
 
+        <activity android:name=".experiments.ExperimentStarter"
+            android:screenOrientation="portrait"/>
+
 
 
 
