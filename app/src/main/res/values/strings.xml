@@ -5,9 +5,12 @@
     <string name="experiment_emotions">Duygu Deneyleri</string>
     <string name="experiment_help">Deneyler Hakkında Açıklama</string>
     <string name="experiment_help_explanation">
-        Burada iki seçenek görmektesiniz.Bunlardan bir tanesi duygusal değişimlerinizi tespit
-        etmek için oluşturulan duygu deneylerini içerir.
-        Diğeri ise matematik, hafıza, bilgiye dayalı yorum
-        ve zaman yönetimi gibi durumları incelemek üzere hazırlanan deneylerdir.
-        Bu pencereyi kapatmak için ekrandaki herhangi bir yere basabilirsiniz.</string>
+        1-)Kullanıcı adınızı belirleyin ya da önceden kayıt ettiğiniz adı seçin.\n
+        2-)Daha önce gerçekleştirmediyseniz Işık testini gerçekleştirin. Işık testinden geçtiğiniz yerde
+            diğer testlere devam edin.\n
+        3-)Normallik testini yapın.\n
+        4-)Duygu testlerinde 3 aşama bulunmaktadır. Kulaklık takıp, sesini duyabileceğiniz kadar bir seviyede
+            tutmanızı tavsiye ederiz.\n
+        5-)Bilişsel yoğunluk deneylerinde istenen hesaplamaları yaptıktan sonra deneyi bitirebilirsiniz.\n
+        6-)Deneylerin kayıtları telefonunuzdaki Downloads klasöründe bulunacaktır. Bize iletmenizi rica ederiz.</string>
 </resources>

@@ -14,10 +14,13 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.util.Log;
+import android.view.SurfaceHolder;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
@@ -41,7 +44,10 @@ public class CameraActivity extends Activity {
     private CameraPreview mPreview;
     private MediaRecorder mediaRecorder;
 
+    private Button captureButton;
+
     private boolean isRecording = false;
+    private LinearLayout main;
 
     private String[] permissions = new String[]{
             Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -49,7 +55,6 @@ public class CameraActivity extends Activity {
             Manifest.permission.CAMERA,
             Manifest.permission.RECORD_AUDIO,
     };
-
 
     public static final int MEDIA_TYPE_IMAGE = 1;
     public static final int MEDIA_TYPE_VIDEO = 2;
@@ -118,7 +123,6 @@ public class CameraActivity extends Activity {
         return i;
     }
 
-
     private boolean checkPermissions() {
         int result;
         List<String> listPermissionsNeeded = new ArrayList<>();
@@ -136,7 +140,6 @@ public class CameraActivity extends Activity {
         return true;
     }
 
-
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         if (requestCode == 100) {
@@ -151,55 +154,32 @@ public class CameraActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
+        setContentView(R.layout.activity_main);
+        main = findViewById(R.id.camera_layout);
         checkPermissions();
 
-        // Create an instance of Camera
         mCamera = getCameraInstance();
-        System.out.println(mCamera);
         mCamera.setDisplayOrientation(90);
-        // Create our Preview view and set it as the content of our activity.
         mPreview = new CameraPreview(this, mCamera);
-        FrameLayout preview = (FrameLayout) findViewById(R.id.camera_preview);
+
+        FrameLayout preview = new FrameLayout(this);
+        preview.setVisibility(View.INVISIBLE);
         preview.addView(mPreview);
+        main.addView(preview);
 
         Button test = (Button) findViewById(R.id.button_test);
-        Button captureButton = (Button) findViewById(R.id.button_capture);
+        captureButton = (Button) findViewById(R.id.button_capture);
         // Add a listener to the Capture button
         captureButton.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
-                    public void onClick(View v) {
-                        if (isRecording) {
-                            // stop recording and release camera
-                            mediaRecorder.stop();  // stop the recording
-                            releaseMediaRecorder(); // release the MediaRecorder object
-                            mCamera.lock();         // take camera access back from MediaRecorder
-
-                            // inform the user that recording has stopped
-                            captureButton.setText("Capture");
-                            isRecording = false;
-                        } else {
-                            // initialize video camera
-                            if (prepareVideoRecorder()) {
-                                // Camera is available and unlocked, MediaRecorder is prepared,
-                                // now you can start recording
-                                mediaRecorder.start();
-
-                                // inform the user that recording has started
-                                captureButton.setText("Stop");
-                                isRecording = true;
-                            } else {
-                                // prepare didn't work, release the camera
-                                releaseMediaRecorder();
-                                // inform user
-                            }
-                        }
+                    public void onClick(View v)
+                    {
+                        record();
                     }
                 }
         );
-
         test.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -242,6 +222,31 @@ public class CameraActivity extends Activity {
         });
     }
 
+    private void record()
+    {
+        if (isRecording)
+        {
+            mediaRecorder.stop();
+            releaseMediaRecorder();
+            mCamera.lock();
+            captureButton.setText("Capture");
+            isRecording = false;
+        }
+        else
+        {
+            if (prepareVideoRecorder())
+            {
+                mediaRecorder.start();
+                captureButton.setText("Stop");
+                isRecording = true;
+            }
+            else
+            {
+                releaseMediaRecorder();
+            }
+        }
+    }
+
     private boolean prepareVideoRecorder(){
 
         mCamera = getCameraInstance();
@@ -259,34 +264,32 @@ public class CameraActivity extends Activity {
         // Step 3: Set a CamcorderProfile (requires API Level 8 or higher)
         mediaRecorder.setProfile(CamcorderProfile.get(CamcorderProfile.QUALITY_LOW));
 
-
         // Step 4: Set output file
         mediaRecorder.setOutputFile(getOutputMediaFile(MEDIA_TYPE_VIDEO).toString());
-
+        System.out.println(getOutputMediaFile(MEDIA_TYPE_VIDEO).toString());
         // Step 5: Set the preview output
-        mediaRecorder.setPreviewDisplay(mPreview.getHolder().getSurface());
-
+        //mediaRecorder.setPreviewDisplay(mPreview.getHolder().getSurface());
+        mediaRecorder.setPreviewDisplay(mPreview.mHolder.getSurface());
         // Step 6: Prepare configured MediaRecorder
-        try {
+        try
+        {
+            System.out.println("step6");
             mediaRecorder.prepare();
-        } catch (IllegalStateException e) {
+            System.out.println("step7");
+        }
+        catch (IllegalStateException e)
+        {
             Log.d("MEDIA RECORDER ERROR", "IllegalStateException preparing MediaRecorder: " + e.getMessage());
             releaseMediaRecorder();
             return false;
-        } catch (IOException e) {
+        }
+        catch (IOException e)
+        {
             Log.d("MEDIA RECORDER ERROR", "IOException preparing MediaRecorder: " + e.getMessage());
             releaseMediaRecorder();
             return false;
         }
         return true;
-    }
-
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        releaseMediaRecorder();       // if you are using MediaRecorder, release it first
-        releaseCamera();              // release the camera immediately on pause event
     }
 
     private void releaseMediaRecorder(){
@@ -298,24 +301,6 @@ public class CameraActivity extends Activity {
         }
     }
 
-    private void releaseCamera(){
-        if (mCamera != null){
-            mCamera.release();        // release the camera for other applications
-            mCamera = null;
-        }
-    }
-
-
-    /** Check if this device has a camera */
-    private boolean checkCameraHardware(Context context) {
-        if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)){
-            // this device has a camera
-            return true;
-        } else {
-            // no camera on this device
-            return false;
-        }
-    }
     /** Check if this device has a camera */
 
     static int front_camera_id = find_frontCamera();

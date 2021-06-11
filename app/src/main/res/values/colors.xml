@@ -10,4 +10,5 @@
     <color name="exp_emotion_color">#389948</color>
     <color name="exp_cognitive_color">#2771C2</color>
     <color name="exp_background_color">#ABB2B9</color>
+    <color name="exp_disabled_color">#A9A9A9</color>
 </resources>
